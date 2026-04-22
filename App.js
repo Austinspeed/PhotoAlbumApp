@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <>
-      <StatusBar style="dark" />
+      {/* <StatusBar style="dark" /> */}
       <NavigationContainer>
         <Stack.Navigator screenOptions={{
           headerStyle: {backgroundColor: Colors.primary500},

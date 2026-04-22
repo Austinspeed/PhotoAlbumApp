@@ -1,7 +1,15 @@
-import { Alert, Button, View } from "react-native";
-import { launchCameraAsync, useCameraPermissions } from "expo-image-picker";
+import { Alert, StyleSheet, View, Text, Image } from "react-native";
+import {
+  launchCameraAsync,
+  useCameraPermissions,
+  PermissionStatus,
+} from "expo-image-picker";
+import { Colors } from "../../constants/Colors";
+import { useState } from "react";
+import OutlinedButton from "../UI/OutlinedButton";
 
 const ImagePicker = () => {
+  const [pickedImage, setPickedImage] = useState();
   const [cameraPermissionInformation, requestPermission] =
     useCameraPermissions();
 
@@ -17,32 +25,55 @@ const ImagePicker = () => {
         "Insufficient Permissions!",
         "You need to grant camera permissions to use this app",
       );
-      return false
+      return false;
     }
 
-    return true
+    return true;
   }
   async function takeImageHandler() {
     const hasPermission = await verifyPermissions();
 
     if (!hasPermission) {
-        return;
+      return;
     }
 
-    const image = launchCameraAsync({
+    const image = await launchCameraAsync({
       allowsEditing: true,
       aspect: [16, 9],
       quality: 0.5,
     });
-    console.log(image);
+
+    setPickedImage(image.assets[0].uri);
+  }
+
+let imagePreview = <Text>No image taken yet!</Text>;
+
+  if (pickedImage) {
+    imagePreview = <Image source={{ uri: pickedImage }} style={styles.image} />;
   }
 
   return (
     <View>
-      <View></View>
-      <Button title="Take Image" onPress={takeImageHandler} />
+      <View style={styles.imagePreview}>{imagePreview}</View>
+      <OutlinedButton icon="camera" title="Take Image" onPress={takeImageHandler} >Take Image</OutlinedButton>
     </View>
   );
 };
 
 export default ImagePicker;
+
+const styles = StyleSheet.create({
+  imagePreview: {
+    width: "100%",
+    height: 200,
+    marginVertical: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.primary100,
+    borderRadius: 4,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
+});
