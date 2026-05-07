@@ -5,6 +5,7 @@ import AllPlaces from "./screens/AllPlaces";
 import IconButton from "./components/UI/IconButton";
 import { StatusBar } from "expo-status-bar";
 import { Colors } from "./constants/Colors";
+import Map from "./screens/Map";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ export default function App() {
           <Stack.Screen name="AddPlace" component={AddPlace} options={{
             title: 'Add a new Place'
           }} />
+          <Stack.Screen name='Map' component={Map} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
